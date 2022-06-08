@@ -20,5 +20,3 @@ mongoose.connect(
 );
 
 module.exports = mongoose;
-
-// test
