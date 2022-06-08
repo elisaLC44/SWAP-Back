@@ -349,7 +349,7 @@ router.post("/add-comment", async (req, res) => {
   console.log('updated opponent comments:', foundOpponent)
   let updatedComments = await foundOpponent.save()
 
-  res.json({status:true})
+  res.json({status:true, updatedComments: updatedComments})
 })
 
 
