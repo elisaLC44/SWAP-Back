@@ -6,7 +6,7 @@ var requestModel = require("../models/requests");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "FROMAGE" });
+  res.render("index", { title: "SWAP" });
 });
 
 //! userByCategory en GET
