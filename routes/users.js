@@ -44,7 +44,7 @@ router.post('/sign-up', async function(req, res, next) {
           email: email,
           password: hash,
           token: uid2(32),
-          user_img : "https://cdn-icons-png.flaticon.com/512/921/921091.png", // pk fonctionne ici et pas ac autres props?
+          user_img : "https://www.jbrhomes.com/wp-content/uploads/blank-avatar.png", // pk fonctionne ici et pas ac autres props?
           birth_date : 0,
           user_credit: 1,
           gender:"",
@@ -145,7 +145,7 @@ router.post("/update-gender/:token", async (req, res) => {
   const {token} = req.params
   const {gender} = req.body
   console.log('token update-gender route', token)
-  console.log('gender params', gender)
+  console.log('gender body', gender)
 
  await userModel.updateOne( { token: token}, {gender: gender});
  let updatedUser = await userModel.findOne({ token: token });
@@ -161,8 +161,8 @@ router.post("/update-categories/:token", async (req, res) => {
   const {token} = req.params
   const {categories} = req.body
   console.log('token update-categ route', token)
-  console.log('categories params', categories)
-  console.log('categories params', typeof categories)
+  console.log('categories body', categories)
+  console.log('categories body', typeof categories)
 
  await userModel.updateOne( { token: token}, {categories: JSON.parse(categories)} );
  let updatedUser = await userModel.findOne({ token: token });
@@ -175,7 +175,7 @@ router.post("/update-bio/:token", async (req, res) => {
   const {token} = req.params
   const {bio} = req.body
   console.log('token update-bio route', token)
-  console.log('categories params', bio)
+  console.log('categories body', bio)
 
  await userModel.updateOne( { token: token}, {bio: bio} );
  let updatedUser = await userModel.findOne({ token: token });
@@ -183,5 +183,18 @@ router.post("/update-bio/:token", async (req, res) => {
   res.json({ result: true, updatedUser: updatedUser});
 })
 
+// -------------------- updater AVATAR
+router.post("/update-avatar/:token", async (req, res) => {
+  const {token} = req.params
+  const {avatar} = req.body
+  console.log('token update-avatarroute', token)
+  console.log('avatar body', avatar)
+
+ await userModel.updateOne( { token: token}, {user_img: avatar} );
+ let updatedUser = await userModel.findOne({ token: token });
+ console.log("updated avatar :", updatedUser )
+
+  res.json({ result: true, updatedUser: updatedUser});
+})
 
 module.exports = router;

@@ -337,16 +337,21 @@ router.post("/add-comment", async (req, res) => {
   console.log("token, comment, opponent_id: ", token, comment, opponent_id)
 
   let currentUser= await userModel.findOne({token : token})
+
+    // var newDate = new Date();
+    // var format = newDate.getDate()+'/'+(newDate.getMonth()+1)+'/'+newDate.getFullYear();
+    // console.log("date", format)
+
   let data = {
-    author : currentUser._id, 
+    author : currentUser.firstName, 
     content : comment,
-    insert_date:  new Date(),
+    insert_date: new Date(),
   }
   
   let foundOpponent = await userModel.findOne({_id : opponent_id })
-  console.log('foundOpponent:', foundOpponent)
+  // console.log('foundOpponent:', foundOpponent)
   foundOpponent.comments.push(data)
-  console.log('updated opponent comments:', foundOpponent)
+  // console.log('updated opponent comments:', foundOpponent)
   let updatedComments = await foundOpponent.save()
 
   res.json({status:true, updatedComments: updatedComments})
