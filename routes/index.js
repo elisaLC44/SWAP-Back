@@ -318,16 +318,20 @@ router.put("/confirm/:requestId/:requestCredit/:token", async (req, res) => {
 
   //* 2. ajouter  "requestCredit" au helper
   let foundHelper = await userModel.findById({_id : foundRequest.helper})
-  console.log('2. foundHelper credit:', typeof foundHelper.user_credit)
+  console.log('2. foundHelper credit before change :', foundHelper.user_credit)
   await userModel.updateOne( { _id : foundRequest.helper }, {user_credit: foundHelper.user_credit + parsedCredit} );
 
   //* 3. ajouter  "requestCredit" au helper
   let foundAsker = await userModel.findById({_id : foundRequest.asker})
-  console.log('2. foundHelper credit:', foundAsker.user_credit)
+  console.log('2. foundAsker credit before change:', foundAsker.user_credit)
   await userModel.updateOne( { _id : foundRequest.asker }, {user_credit: foundAsker.user_credit - parsedCredit} );
 
-  // newHelperCredit, newAskerCredit 
-  res.json({status: true})
+  //* 4. get current-user updated-credit
+  let currentUser = await userModel.findOne({token: token})
+  let updateUserCredit = currentUser.user_credit
+  console.log("currentUser updated credit :", currentUser.user_credit )
+
+  res.json({updateUserCredit})
 })
 
 
@@ -354,18 +358,18 @@ router.post("/add-comment", async (req, res) => {
   // console.log('updated opponent comments:', foundOpponent)
   let updatedComments = await foundOpponent.save()
 
-  res.json({status:true, updatedComments: updatedComments})
+  res.json({updatedComments: updatedComments})
 })
 
 
 // ! GET-déclaration pour affichage
 router.get("/get-declaration/:requestId", async (req, res) => {
 const {requestId} = req.params
-console.log("GET-DECLARATION:",requestId)
+// console.log("GET-DECLARATION:",requestId)
 let status = false
 
 let foundRequest = await requestModel.findOne({_id : requestId})
-console.log("foundRequest GET-DECL:",foundRequest)
+// console.log("foundRequest GET-DECL:",foundRequest)
 if (foundRequest.credit != null) {
   status = true
 } else {
